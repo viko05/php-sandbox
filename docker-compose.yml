@@ -6,7 +6,7 @@ services:
       context: ./docker/php-fpm
       dockerfile: Dockerfile
     volumes:
-      - ./public:/var/www/html
+      - ./slim-app:/var/www/html
     networks:
       - internal
   nginx:
