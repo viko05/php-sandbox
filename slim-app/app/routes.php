@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Application\Actions\User\ListUsersAction;
 use App\Application\Actions\User\ViewUserAction;
+use App\Application\Middleware\AuthMiddleware;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -19,6 +20,17 @@ return function (App $app) {
         $response->getBody()->write('Hello world!');
         return $response;
     });
+
+    $app->group('/auth-required', function (Group $group) {
+        $group->get('/resource-a', function (Request $request, Response $response) {
+            $response->getBody()->write('Resource A content received');
+            return $response;
+        });
+        $group->get('/resource-b', function (Request $request, Response $response) {
+            $response->getBody()->write('Resource B content received');
+            return $response;
+        });
+    })->addMiddleware(new AuthMiddleware());
 
     $app->group('/users', function (Group $group) {
         $group->get('', ListUsersAction::class);
