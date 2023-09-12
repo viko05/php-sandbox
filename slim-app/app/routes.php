@@ -7,10 +7,16 @@ use App\Application\Actions\User\ViewUserAction;
 use App\Application\Middleware\AuthMiddleware;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Log\LoggerInterface;
 use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
 return function (App $app) {
+    $c = $app->getContainer();
+    /** @var LoggerInterface $logger */
+    $logger = $c->get(LoggerInterface::class);
+    $auth0Sdk = $c->get('Auth0SdkM2M');
+
     $app->options('/{routes:.*}', function (Request $request, Response $response) {
         // CORS Pre-Flight OPTIONS Request Handler
         return $response;
@@ -21,7 +27,13 @@ return function (App $app) {
         return $response;
     });
 
-    $app->group('/auth-required', function (Group $group) {
+    $app->group('/users', function (Group $group) {
+        $group->get('', ListUsersAction::class);
+        $group->get('/{id}', ViewUserAction::class);
+    });
+
+    // This group contains the routes which require authorized requests
+    $app->group('/auth-required', function (Group $group){
         $group->get('/resource-a', function (Request $request, Response $response) {
             $response->getBody()->write('Resource A content received');
             return $response;
@@ -30,10 +42,5 @@ return function (App $app) {
             $response->getBody()->write('Resource B content received');
             return $response;
         });
-    })->addMiddleware(new AuthMiddleware());
-
-    $app->group('/users', function (Group $group) {
-        $group->get('', ListUsersAction::class);
-        $group->get('/{id}', ViewUserAction::class);
-    });
+    })->addMiddleware(new AuthMiddleware($auth0Sdk, $logger));
 };
