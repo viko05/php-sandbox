@@ -24,14 +24,20 @@
     "require": {
         "php": "^7.4 || ^8.0",
         "ext-json": "*",
+        "auth0/auth0-php": "^8.7",
         "fig/http-message-util": "^1.1",
         "monolog/monolog": "^2.8",
+        "nyholm/psr7": "^1.8",
         "php-di/php-di": "^6.4",
         "slim/psr7": "^1.5",
-        "slim/slim": "^4.10"
+        "slim/slim": "^4.10",
+        "symfony/console": "^6.3",
+        "symfony/dotenv": "^6.3",
+        "symfony/http-client": "^6.3"
     },
     "require-dev": {
         "jangregor/phpstan-prophecy": "^1.0.0",
+        "larapack/dd": "^1.1",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpstan/extension-installer": "^1.2.0",
         "phpstan/phpstan": "^1.8",
@@ -40,7 +46,8 @@
     },
     "config": {
         "allow-plugins": {
-            "phpstan/extension-installer": true
+            "phpstan/extension-installer": true,
+            "php-http/discovery": true
         },
         "process-timeout": 0,
         "sort-packages": true
