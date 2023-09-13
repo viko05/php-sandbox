@@ -9,7 +9,9 @@ use App\Application\Settings\SettingsInterface;
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
 use Slim\Factory\ServerRequestCreatorFactory;
+use Slim\Views\Twig;
 use Symfony\Component\Dotenv\Dotenv;
+use Templates\View;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -38,6 +40,11 @@ $repositories($containerBuilder);
 
 // Build PHP-DI Container instance
 $container = $containerBuilder->build();
+
+// Set view in Container
+$container->set('view', function() {
+    return Twig::create(__DIR__ . '/../Templates', ['cache' => __DIR__ . '/../var/cache/templates']);
+});
 
 // Instantiate the app
 AppFactory::setContainer($container);

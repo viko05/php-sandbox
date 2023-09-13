@@ -11,6 +11,8 @@ use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use Slim\Views\Twig;
+use Templates\ViewInterface;
 
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
@@ -27,6 +29,9 @@ return function (ContainerBuilder $containerBuilder) {
             $logger->pushHandler($handler);
 
             return $logger;
+        },
+        Twig::class => function(ContainerInterface $c) {
+            return $c->get('view');
         },
         'Auth0SdkM2M' => function (ContainerInterface $c) {
             $settings = $c->get(SettingsInterface::class);

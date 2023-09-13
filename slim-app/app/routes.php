@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Application\Actions\Html\PageOneAction;
 use App\Application\Actions\User\ListUsersAction;
 use App\Application\Actions\User\ViewUserAction;
 use App\Application\Middleware\AuthMiddleware;
@@ -32,7 +33,7 @@ return function (App $app) {
         $group->get('/{id}', ViewUserAction::class);
     });
 
-    // This group contains the routes which require authorized requests
+    // This group contains the routes which require client authorization
     $app->group('/auth-required', function (Group $group){
         $group->get('/resource-a', function (Request $request, Response $response) {
             $response->getBody()->write('Resource A content received');
@@ -43,4 +44,9 @@ return function (App $app) {
             return $response;
         });
     })->addMiddleware(new AuthMiddleware($auth0Sdk, $logger));
+
+    // This group contains the routes which use Authorization Code Flow with Proof Key for Code Exchange (PKCE)
+    $app->group('/no-auth', function (Group $group){
+        $group->get('/page-one', PageOneAction::class);
+    });
 };
