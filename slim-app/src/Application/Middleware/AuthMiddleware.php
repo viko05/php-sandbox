@@ -27,24 +27,27 @@ readonly class AuthMiddleware implements Middleware
     public function process(Request $request, RequestHandler $handler): ResponseInterface
     {
         $this->logger->info('Authentication starts');
-        $response = new Response();
+        $response = (new Response())->withHeader('Content-Type', 'application/json');
 
         $token = $this->sdk->getBearerToken(
             get: ['token'],
             server: ['HTTP_AUTHORIZATION']
         );
 
-        try {
-            $token->validate();
-        } catch (InvalidTokenException $e) {
-            $this->logger->error($e->getMessage());
-        } catch (\Throwable $e) {
-            $response->getBody()->write(json_encode(['msg' => 'Unauthorized']));
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(StatusCode::STATUS_UNAUTHORIZED, 'Unauthorized');
+        if ($token) {
+            try {
+                $token->validate();
+                return $response->withStatus(StatusCode::STATUS_UNAUTHORIZED, 'Successfully authorized');
+            } catch (InvalidTokenException $e) {
+                $response->getBody()->write(json_encode(['Auth error' => $e->getMessage()]));
+            } catch (\Throwable $e) {
+                $this->logger->error($e->getMessage());
+                $response->getBody()->write(json_encode(['App error' => $e->getMessage()]));
+            }
+        } else {
+            $response->getBody()->write(json_encode(['Response' => 'Request is not authorized']));
         }
 
-        return $response;
+        return $response->withStatus(StatusCode::STATUS_UNAUTHORIZED, 'Unauthorized');
     }
 }

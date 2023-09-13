@@ -37,6 +37,7 @@ class ExampleCommand extends Command
         );
 
         $sdk = new Auth0($authConf);
+        // Request access token from OAuth issuer server
         $resp = $sdk->authentication()->oauthToken('client_credentials');
         // @todo: handle failed auth
         $accessToken = new AccessToken($resp);
