@@ -22,11 +22,14 @@ class ExampleCommand extends Command
     }
 
     /**
+     * Usage: php cli/example.php example
+     * Machine to machine authorization flow demo
+     *
      * @throws ConfigurationException
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->writeln(sprintf('<info>Machine to machine authentication flow example</info>'));
+        $output->writeln('<info>Machine to machine authentication flow example</info>');
 
         $authConf = new SdkConfiguration(
             strategy: SdkConfiguration::STRATEGY_API,
