@@ -37,7 +37,7 @@ readonly class AuthClientCredentialsMiddleware implements Middleware
         if ($token) {
             try {
                 $token->validate();
-                return $response->withStatus(StatusCode::STATUS_UNAUTHORIZED, 'Successfully authorized');
+                return $response->withStatus(StatusCode::STATUS_OK, 'Successfully authorized');
             } catch (InvalidTokenException $e) {
                 $response->getBody()->write(json_encode(['Auth error' => $e->getMessage()]));
             } catch (\Throwable $e) {
