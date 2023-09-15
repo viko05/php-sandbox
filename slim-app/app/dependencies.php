@@ -12,7 +12,6 @@ use Monolog\Processor\UidProcessor;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Slim\Views\Twig;
-use Templates\ViewInterface;
 
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
@@ -43,6 +42,21 @@ return function (ContainerBuilder $containerBuilder) {
                 clientId: $sdkConf['clientId'],
                 clientSecret: $sdkConf['clientSecret'],
                 audience: $sdkConf['audience'],
+            );
+
+            return new Auth0($authConf);
+        },
+        'Auth0SdkWebApp' => function (ContainerInterface $c) {
+            $settings = $c->get(SettingsInterface::class);
+            $sdkConf = $settings->get('Auth0WebAppClient');
+
+            $authConf = new SdkConfiguration(
+                strategy: $sdkConf['strategy'],
+                domain: $sdkConf['domain'],
+                clientId: $sdkConf['clientId'],
+                clientSecret: $sdkConf['clientSecret'],
+                audience: $sdkConf['audience'],
+                cookieSecret: $sdkConf['cookieSecret'],
             );
 
             return new Auth0($authConf);

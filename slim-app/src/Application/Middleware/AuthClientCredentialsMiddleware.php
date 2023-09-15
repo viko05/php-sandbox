@@ -15,7 +15,7 @@ use Fig\Http\Message\StatusCodeInterface as StatusCode;
 use Psr\Log\LoggerInterface;
 use Slim\Psr7\Response;
 
-readonly class AuthMiddleware implements Middleware
+readonly class AuthClientCredentialsMiddleware implements Middleware
 {
     public function __construct(protected Auth0Interface $sdk, private LoggerInterface $logger)
     {

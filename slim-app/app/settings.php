@@ -29,6 +29,14 @@ return function (ContainerBuilder $containerBuilder) {
                     'clientSecret' => getenv('CLIENT_SECRET'),
                     'audience' => [getenv('OAUTH_API_IDENTIFIER')],
                 ],
+                'Auth0WebAppClient' => [
+                    'strategy' => SdkConfiguration::STRATEGY_REGULAR,
+                    'domain' => getenv('OAUTH_API_DOMAIN'),
+                    'clientId' => getenv('CLIENT_ID'),
+                    'clientSecret' => getenv('CLIENT_SECRET'),
+                    'audience' => [getenv('OAUTH_API_IDENTIFIER')],
+                    'cookieSecret' => getenv('AUTH0_COOKIE_SECRET'),
+                ],
             ]);
         }
     ]);
