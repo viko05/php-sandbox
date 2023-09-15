@@ -41,13 +41,14 @@ class ExampleCommand extends Command
 
         $sdk = new Auth0($authConf);
         // Request access token from OAuth issuer server
-        $resp = $sdk->authentication()->oauthToken('client_credentials');
+        $authResp = $sdk->authentication()->oauthToken('client_credentials');
         // @todo: handle failed auth
-        $accessToken = new AccessToken($resp);
+        $accessToken = new AccessToken($authResp);
+        $output->writeln(sprintf('<info>Auth status code %s</info>', $authResp->getStatusCode()));
 
         // Now let's call the api with this token
         $http = HttpClient::createForBaseUri('http://nginx');
-        $resp = $http->request('GET', '/auth-required/resource-a', [
+        $appResp = $http->request('GET', '/client-credentials/resource-a', [
             'headers' => [
                 'Accept' => 'application/json',
                 'Authorization' => "Bearer {$accessToken->accessToken}",
@@ -55,7 +56,7 @@ class ExampleCommand extends Command
             'extra' => ['XDEBUG_SESSION' => 'PHPSTORM'],
         ]);
 
-        $output->writeln(sprintf('<info>Auth status code %s</info>', $resp->getStatusCode()));
+        $output->writeln(sprintf('<info>Web endpoint respond with status %s</info>', $appResp->getStatusCode()));
 
         // The error code, 0 on success
         return 0;
