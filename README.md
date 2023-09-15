@@ -22,7 +22,7 @@ In this case [Client credentials flow](https://auth0.com/docs/get-started/authen
 To initiate this flow try to access open `http://phpfpm.loc:8000/web-app-auth/page-one` in your browser.
 Next you have to be redirected to login page. After successful _sign up_ and _sign in_ actions the page mentioned above should be accessible.
 
-**NOTE:** For in both cases [Auth0-PHP SDK](https://auth0.com/docs/libraries/auth0-php) library is used to call auth endpoint and validate the responses.<br>
+**NOTE:** In both cases [Auth0-PHP SDK](https://auth0.com/docs/libraries/auth0-php) library is used to call auth endpoint and validate the responses.<br>
 
 **NOTE** By default for _Authorization code flow_ by default Proof Key Code Exchange is enabled.
 [Learn more](https://auth0.com/docs/get-started/authentication-and-authorization-flow/authorization-code-flow-with-proof-key-for-code-exchange-pkce).
