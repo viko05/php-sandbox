@@ -40,7 +40,6 @@ return function (App $app) {
         $result = $auth0SdkWebApp->exchange(getenv('APP_BASE_URL').'/auth-callback');
         return $response->withStatus(StatusCodeInterface::STATUS_FOUND)->withHeader('Location', '/');
     });
-    $app->get('/profile', ProfileAction::class);
     $app->get('/login', LoginAction::class);
     $app->get('/logout', function (Request $request, Response $response) use ($auth0SdkWebApp) {
         return $response->withHeader('Location', $auth0SdkWebApp->logout(getenv('APP_BASE_URL', ).'/'));
