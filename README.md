@@ -14,7 +14,7 @@ Run it from inside the `demo-php-fpm` container
 ```bash
 php cli/example.php example
 ```
-The cli application will try to call some endpoint `/client-credentials/resource-a` required authorization of the regular web application in this project.
+The cli application will try to call some endpoint `/client-credentials/resource-a` Authorization is required to access this endpoint.
 In this case [Client credentials flow](https://auth0.com/docs/get-started/authentication-and-authorization-flow/client-credentials-flow) implemented.
 
 ## Authorization Code flow
