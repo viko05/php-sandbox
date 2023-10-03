@@ -1,16 +1,17 @@
 version: '3'
 services:
   php:
-    container_name: demo-php-fpm
+    container_name: gg-php-fpm
     build:
       context: ./docker/php-fpm
       dockerfile: Dockerfile
     volumes:
-      - ./public:/var/www/html
+      - ./laravel:/var/www/html
+      - ./docker/php-fpm/conf.d/user.ini:/usr/local/etc/php/conf.d/user.ini
     networks:
       - internal
   nginx:
-    container_name: demo-nginx
+    container_name: gg-nginx
     build:
       context: ./docker/nginx
       dockerfile: Dockerfile
